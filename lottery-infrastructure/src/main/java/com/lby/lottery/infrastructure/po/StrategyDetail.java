@@ -12,6 +12,11 @@ public class StrategyDetail {
     // 奖品ID
     private String awardId;
 
+    /**
+     * 奖品名称
+     */
+    private String awardName;
+
     // 奖品数量
     private String awardCount;
 
@@ -73,6 +78,14 @@ public class StrategyDetail {
         return createTime;
     }
 
+    public String getAwardName() {
+        return awardName;
+    }
+
+    public void setAwardName(String awardName) {
+        this.awardName = awardName;
+    }
+
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
@@ -83,5 +96,13 @@ public class StrategyDetail {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getAwardSurplusCount() {
+        return awardSurplusCount;
+    }
+
+    public void setAwardSurplusCount(Integer awardSurplusCount) {
+        this.awardSurplusCount = awardSurplusCount;
     }
 }
