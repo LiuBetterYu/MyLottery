@@ -1,51 +1,50 @@
 package com.lby.lottery.domain.strategy.service.draw.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.lby.lottery.domain.strategy.model.aggregates.StrategyRich;
 import com.lby.lottery.domain.strategy.model.req.DrawReq;
 import com.lby.lottery.domain.strategy.model.res.DrawResult;
 import com.lby.lottery.domain.strategy.repository.IStrategyRepository;
 import com.lby.lottery.domain.strategy.service.algorithm.IDrawAlgorithm;
-import com.lby.lottery.domain.strategy.service.draw.DrawBase;
+import com.lby.lottery.domain.strategy.service.draw.AbstractDrawBase;
 import com.lby.lottery.domain.strategy.service.draw.IDrawExec;
 import com.lby.lottery.infrastructure.po.Award;
 import com.lby.lottery.infrastructure.po.Strategy;
 import com.lby.lottery.infrastructure.po.StrategyDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DrawExecImpl extends DrawBase implements IDrawExec {
+@Service("drawExec")
+public class DrawExecImpl extends AbstractDrawBase {
 
     private Logger logger = LoggerFactory.getLogger(DrawExecImpl.class);
 
-    @Resource
-    private IStrategyRepository strategyRepository;
+    @Override
+    protected List<String> queryExcludeAwardIds(Long strategyId) {
+        List<String> awardList = strategyRepository.queryNoStockStrategyAwardList(strategyId);
+        logger.info("执行抽奖策略 strategyId: {}, 无库存排除奖品列表ID集合 awardList: {}", strategyId, JSON.toJSONString(awardList));
+        return awardList;
+    }
 
     @Override
-    public DrawResult doDrawExec(DrawReq req) {
-        logger.info("执行策略抽奖开始，strategyId：{}", req.getStrategyId());
+    protected String drawAlgorithm(Long strategyId, IDrawAlgorithm drawAlgorithm, List<String> excludeAwardIds) {
+        // 执行抽奖
+        String awardId = drawAlgorithm.randomDraw(strategyId, excludeAwardIds);
 
-        // 获取抽奖策略配置数据
-        StrategyRich strategyRich = strategyRepository.queryStrategyRich(req.getStrategyId());
-        Strategy strategy = strategyRich.getStrategy();
-        List<StrategyDetail> strategyDetailList = strategyRich.getStrategyDetailList();
+        // 判断抽奖结果
+        if (null == awardId) {
+            return null;
+        }
 
-        // 校验和初始化数据
-        checkAndInitRateData(req.getStrategyId(), strategy.getStrategyMode(), strategyDetailList);
+        // 扣减库存
+        boolean isSuccess = strategyRepository.deductStock(strategyId, awardId);
 
-        // 根据策略方式抽奖
-        IDrawAlgorithm drawAlgorithm = drawAlgorithmMap.get(strategy.getStrategyMode());
-        String awardId = drawAlgorithm.randomDraw(req.getStrategyId(), new ArrayList<>());
-
-        // 获取奖品信息
-        Award award = strategyRepository.queryAwardInfo(awardId);
-
-        logger.info("执行策略抽奖完成，中奖用户：{} 奖品ID：{} 奖品名称：{}", req.getuId(), awardId, award.getAwardName());
-
-        // 封装结果
-        return new DrawResult(req.getuId(), req.getStrategyId(), awardId, award.getAwardName());
+        // 返回结果，库存扣减成功返回奖品ID，否则返回NULL 「在实际的业务场景中，如果中奖奖品库存为空，则会发送兜底奖品，比如各类券」
+        return isSuccess ? awardId : null;
     }
 }
