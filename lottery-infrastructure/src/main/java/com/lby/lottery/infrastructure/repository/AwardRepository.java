@@ -1,4 +1,4 @@
-package com.lby.lottery.domain.award.repository.impl;
+package com.lby.lottery.infrastructure.repository;
 
 import com.lby.lottery.domain.award.repository.IAwardRepository;
 import org.springframework.stereotype.Component;

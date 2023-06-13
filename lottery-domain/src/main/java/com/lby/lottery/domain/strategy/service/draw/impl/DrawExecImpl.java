@@ -8,9 +8,7 @@ import com.lby.lottery.domain.strategy.repository.IStrategyRepository;
 import com.lby.lottery.domain.strategy.service.algorithm.IDrawAlgorithm;
 import com.lby.lottery.domain.strategy.service.draw.AbstractDrawBase;
 import com.lby.lottery.domain.strategy.service.draw.IDrawExec;
-import com.lby.lottery.infrastructure.po.Award;
-import com.lby.lottery.infrastructure.po.Strategy;
-import com.lby.lottery.infrastructure.po.StrategyDetail;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,6 +17,10 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 抽奖过程方法实现
+ * @author lby
+ */
 @Service("drawExec")
 public class DrawExecImpl extends AbstractDrawBase {
 

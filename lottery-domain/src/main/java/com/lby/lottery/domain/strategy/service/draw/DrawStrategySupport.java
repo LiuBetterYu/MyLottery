@@ -1,8 +1,9 @@
 package com.lby.lottery.domain.strategy.service.draw;
 
 import com.lby.lottery.domain.strategy.model.aggregates.StrategyRich;
+import com.lby.lottery.domain.strategy.model.vo.AwardBriefVO;
 import com.lby.lottery.domain.strategy.repository.IStrategyRepository;
-import com.lby.lottery.infrastructure.po.Award;
+
 
 import javax.annotation.Resource;
 
@@ -28,7 +29,7 @@ public class DrawStrategySupport extends DrawConfig{
      * @param awardId
      * @return
      */
-    protected Award queryAwardInfoByAwardId(String awardId) {
+    protected AwardBriefVO queryAwardInfoByAwardId(String awardId) {
         return strategyRepository.queryAwardInfo(awardId);
     }
 }
