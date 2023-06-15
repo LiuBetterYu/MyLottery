@@ -1,5 +1,8 @@
 package com.lby.lottery.domain.activity.service.partake;
 
+import com.lby.lottery.domain.activity.model.req.PartakeReq;
+import com.lby.lottery.domain.activity.model.res.PartakeResult;
+
 /**
  * 抽奖活动参与接口
  * @author lby
@@ -7,7 +10,9 @@ package com.lby.lottery.domain.activity.service.partake;
 public interface IActivityPartake {
 
     /**
-     * TODO：待开发活动参与接口
+     * 参与活动
+     * @param req 入参
+     * @return  领取结果
      */
-    void doPartake();
+    PartakeResult doPartake(PartakeReq req);
 }
