@@ -13,6 +13,7 @@ import com.lby.lottery.infrastructure.po.Strategy;
 import com.lby.lottery.infrastructure.po.StrategyDetail;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.List;
  * 策略表仓储服务
  * @author lby
  */
-@Component
+@Repository
 public class StrategyRepository implements IStrategyRepository {
 
     @Resource

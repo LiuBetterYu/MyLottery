@@ -10,6 +10,7 @@ import com.lby.lottery.infrastructure.po.UserStrategyExport;
 import com.lby.lottery.infrastructure.po.UserTakeActivity;
 import com.lby.lottery.infrastructure.po.UserTakeActivityCount;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -18,7 +19,7 @@ import java.util.Date;
  * 用户参与活动仓储
  * @author lby
  */
-@Component
+@Repository
 public class UserTakeActivityRepository implements IUserTakeActivityRepository {
 
     @Resource
